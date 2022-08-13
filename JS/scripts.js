@@ -16,10 +16,15 @@ const readFromLocalStorage = ()=>{
     let data;
     try{
         data = JSON.parse(localStorage.getItem("tasks")) || [];
+        if(!Array.isArray(data)) throw new Error('invalid data');
     }catch(e){
         console.log(e);
     }
     return data;
+}
+
+const writeToLocalStorage = (data,storageKey = "tasks")=>{
+    localStorage.setItem(storageKey,JSON.stringify(data));
 }
 
 const showTasks = (tasks)=>{
@@ -54,9 +59,42 @@ const openCloseAddTaskForm = (e=false)=> {
     addTaskDiv.classList.toggle("d-none");
 }
 
+const createElement = (child,parent,classes="",value="")=>{
+    const element = document.createElement(child);
+    element.classList = classes;
+    element.innerHTML = value;
+    parent.appendChild(element);
+    return element;
+}
+
+const addTaskFun = (allTasks)=>{
+    const data = {};
+
+    task.forEach((head)=>{
+        if(head.value === null) data[head.key] = addTaskForm.elements[head.key].value;
+        else data[head.key] = head.value;
+    });
+
+    allTasks.push(data);
+    writeToLocalStorage(allTasks);
+    window.location.href="index.html";
+}
+
+const validateInputs = (e,allTasks)=>{
+    e.preventDefault();
+
+    if(addTaskForm.elements["name"].value==""){
+        const alertDiv = createElement("div",addTaskForm,"alert alert-danger mt-3","You Should Enter Task Name");
+        setTimeout(()=>alertDiv.remove(),2000);
+    }
+    else { addTaskFun(allTasks); }
+}
+
 if(addTaskForm){
+    const allTasks = readFromLocalStorage();
     addTaskBtn.addEventListener("click", openCloseAddTaskForm);
     closeBtn.addEventListener("click",openCloseAddTaskForm);
+    addTaskForm.addEventListener("submit", (e)=>validateInputs(e,allTasks));
 }
 
 //////////////////////////////////////////////////////////////////
