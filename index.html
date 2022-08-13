@@ -4,37 +4,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To DO List</title>
+    <title>To Do List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="index.html">To Do List</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav col-lg-9 col-12">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="index.html">Not Completed</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="completedTasks.html">Completed</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="favourtieTasks.html">Favourites</a>
-              </li>
-            </ul>
-            <div class="col-lg-3 col-12">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>          
+    <header>
+      <nav class="navbar navbar-expand-lg bg-light">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">To Do List</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav col-lg-8 col-12">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="index.html">Not Completed</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="completedTasks.html">Completed</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="favourtieTasks.html">Favourites</a>
+                </li>
+              </ul>
+              <div class="col-lg-3 col-12">
+                  <form class="d-flex" role="search">
+                      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                      <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>
+              </div>
+              <div class="col-lg-1 col-12">
+                <button class="btn" id="addTaskBtn">Add Task</button>
+              </div>          
+            </div>
           </div>
-        </div>
-    </nav>
+      </nav>
+    </header>
+
+    <section id="notCompletedTasksSec" class="position-relative">
+      <div id="noTasksDiv" class="text-center position-relative show">
+        <p class="position-absolute top-50 notasksyet">No Tasks Yet</p>
+        <img src="images/notasks.jpg" class="w-25 mt-5" alt="no tasks">
+      </div>
+
+      <div id="tasksDiv" class="show">
+
+      </div>
+      <div id="addTaskDiv" class="position-absolute top-0 end-0 bg-danger d-none">
+        <form id="addTaskForm" class="p-3">
+          <input type="text" placeholder="Name" class="w-100" name="name"><br>
+          <textarea name="details" placeholder="Details" class="w-100 mt-3" rows="10"></textarea>
+          <label class="me-5 mt-3">Deadline:</label>
+          <input type="datetime-local" name="deadline">
+          <div class="clearfix"></div>
+          <button type="submit" class="mt-5 w-25">Add</button>
+          <button id="closeBtn" class="mt-5 w-25 float-end">Close</button>
+        </form>
+      </div>
+    </section>
+
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <script src="JS/scripts.js"></script>
