@@ -18,9 +18,6 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav col-lg-9 col-12">
               <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="index.html">Not Completed</a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link active" href="completedTasks.html">Completed</a>
               </li>
               <li class="nav-item">
@@ -37,10 +34,16 @@
         </div>
     </nav>
 
-    <div id="noTasksDiv" class="text-center position-relative">
-      <p class="position-absolute top-50 notasksyet">No Tasks Yet</p>
-      <img src="images/notasks.jpg" class="w-25 mt-5" alt="no tasks">
-    </div>
+    <section id="completedTasksSec" class="position-relative">
+      <div id="noTasksDiv" class="text-center position-relative hide">
+        <p class="position-absolute top-50 notasksyet">No Tasks Yet</p>
+        <img src="images/notasks.jpg" class="w-25 mt-5" alt="no tasks">
+      </div>
+
+      <div id="tasksDiv" class="mt-5 d-flex justify-content-evenly flex-wrap show">
+        
+      </div>
+    </section>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <script src="JS/scripts.js"></script>

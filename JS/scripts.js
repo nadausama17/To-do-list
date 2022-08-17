@@ -1,6 +1,6 @@
 //status is set to false to refer that task is not completed
 //favourite is set to false to refer that task is not in user's favourites
-const task = [
+const taskObj = [
     {key:"id", value:Date.now()},
     {key:"name", value:null},
     {key:"details", value:null},
@@ -58,14 +58,37 @@ const showWarningMessage = (task,currentDate)=>{
     return false;
 }
 
-const drawSingleTask = (task,currentDate = "")=>{
+const unCompleteTheTask = (i,pageTasks,allTasks)=>{
+    const currentDate = new Date();
+    const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
+    allTasks[taskIndex].status = false;
+    pageTasks.splice(i,1);
+    writeToLocalStorage(allTasks);
+    showTasks(pageTasks,allTasks,currentDate);
+}
 
-    const div1 = createElement("div",tasksDiv,"card w-25 ms-2");
+const completeTheTask = (i,pageTasks,allTasks)=>{
+    const currentDate = new Date();
+    const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
+    allTasks[taskIndex].status = true;
+    pageTasks.splice(i,1);
+    writeToLocalStorage(allTasks);
+    showTasks(pageTasks,allTasks,currentDate);
+}
+
+const deleteTask = (i,pageTasks,allTasks)=>{
+    const task = pageTasks[i];
+}
+
+const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
+
+    const div1 = createElement("div",tasksDiv,"card w-25 mt-5 ms-2");
     const h5 = createElement("h5",div1,"card-header d-flex justify-content-between");
     const h5Div1 = createElement("div",h5,"",task["name"]);
     const h5Div2 = createElement("div",h5,"form-check");
     const label = createElement("label",h5Div2,"fs-6","Complete");
     const inputCheck = createElement("input",h5Div2,"form-check-input","","checkbox");
+    if(task.status) inputCheck.checked = true;
     const div2 = createElement("div",div1,"card-body text-center");
     
     if(showWarningMessage(task,currentDate)){
@@ -75,35 +98,41 @@ const drawSingleTask = (task,currentDate = "")=>{
     const p = createElement("p",div2,"card-text","Deadline: "+task["deadlineDate"]+" "+task["deadlineTime"]);
     const btnViewDetails = createElement("button",div2,"btn btn-primary me-3","View Details");
     const btnDelete = createElement("button",div2,"btn btn-primary","Delete");
+    inputCheck.addEventListener("click",()=>{
+        if(task.status) unCompleteTheTask(i,pageTasks,allTasks);
+        else completeTheTask(i,pageTasks,allTasks);
+    });
+    btnDelete.addEventListener("click",()=>deleteTask(i,pageTasks,allTasks))
 }
 
-const drawTasks = (tasks,currentDate = "")=>{
-    tasks.forEach((task)=>{
-        drawSingleTask(task,currentDate);
+const drawTasks = (pageTasks,allTasks,currentDate = "")=>{
+    pageTasks.forEach((task,i)=>{
+        drawSingleTask(task,i,pageTasks,allTasks,currentDate);
     });
 }
 
-const showTasks = (tasks,currentDate = "")=>{
+const showTasks = (pageTasks,allTasks,currentDate = "")=>{
     const noTasksDiv = document.querySelector("#noTasksDiv");
 
-    if(tasks.length <= 0) {
+    if(pageTasks.length <= 0) {
         noTasksDiv.classList.replace("hide","show");
         tasksDiv.classList.replace("show","hide");
     }else{
         tasksDiv.innerHTML="";
         noTasksDiv.classList.replace("show","hide");
         tasksDiv.classList.replace("hide","show");
-        drawTasks(tasks,currentDate);
+        drawTasks(pageTasks,allTasks,currentDate);
     }
 }
 
 if(notCompletedTasksSec){
     const currentDate = new Date();
 
-    const notCompletedTasks=readFromLocalStorage().filter((task)=>{
+    const allTasks = readFromLocalStorage();
+    const notCompletedTasks=allTasks.filter((task)=>{
         return task.status == false ;
     });
-    showTasks(notCompletedTasks,currentDate);
+    showTasks(notCompletedTasks,allTasks,currentDate);
 }
 
 //add task functions
@@ -120,7 +149,7 @@ const openCloseAddTaskForm = (e=false)=> {
 const addTaskFun = (allTasks)=>{
     const data = {};
 
-    task.forEach((head)=>{
+    taskObj.forEach((head)=>{
         if(head.value === null) data[head.key] = addTaskForm.elements[head.key].value;
         else data[head.key] = head.value;
     });
@@ -147,4 +176,17 @@ if(addTaskForm){
     addTaskForm.addEventListener("submit", (e)=>validateInputs(e,allTasks));
 }
 
-//////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+///////////////// CompletedTasks Functions ////////////////////////////////
+const completedTasksSec = document.querySelector("#completedTasksSec");
+
+if(completedTasksSec){
+    const currentDate = new Date();
+
+    const allTasks = readFromLocalStorage();
+    const completedTasks=allTasks.filter((task)=>{
+        return task.status == true ;
+    });
+    showTasks(completedTasks,allTasks,currentDate);
+}
