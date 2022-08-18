@@ -59,25 +59,41 @@ const showWarningMessage = (task,currentDate)=>{
 }
 
 const unCompleteTheTask = (i,pageTasks,allTasks)=>{
-    const currentDate = new Date();
     const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
     allTasks[taskIndex].status = false;
     pageTasks.splice(i,1);
     writeToLocalStorage(allTasks);
-    showTasks(pageTasks,allTasks,currentDate);
+    showTasks(pageTasks,allTasks);
 }
 
 const completeTheTask = (i,pageTasks,allTasks)=>{
-    const currentDate = new Date();
     const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
     allTasks[taskIndex].status = true;
     pageTasks.splice(i,1);
     writeToLocalStorage(allTasks);
-    showTasks(pageTasks,allTasks,currentDate);
+    showTasks(pageTasks,allTasks);
 }
 
 const deleteTask = (i,pageTasks,allTasks)=>{
-    const task = pageTasks[i];
+    const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
+    allTasks.splice(taskIndex,1);
+    pageTasks.splice(i,1);
+    writeToLocalStorage(allTasks);
+    showTasks(pageTasks,allTasks)
+}
+
+const unfavouriteTheTask = (i,pageTasks,allTasks)=>{
+    const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
+    allTasks[taskIndex].favourite = false;
+    writeToLocalStorage(allTasks);
+    showTasks(pageTasks,allTasks);
+}
+
+const favouriteTheTask = (i,pageTasks,allTasks)=>{
+    const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
+    allTasks[taskIndex].favourite = true;
+    writeToLocalStorage(allTasks);
+    showTasks(pageTasks,allTasks);
 }
 
 const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
@@ -87,7 +103,9 @@ const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
     const h5Div1 = createElement("div",h5,"",task["name"]);
     const h5Div2 = createElement("div",h5,"form-check");
     const label = createElement("label",h5Div2,"fs-6","Complete");
-    const inputCheck = createElement("input",h5Div2,"form-check-input","","checkbox");
+    const star = createElement("i",h5Div2,"ms-1 fa-solid fa-star showPointer");
+    if(task.favourite) star.classList.add("yellowStar");
+    const inputCheck = createElement("input",h5Div2,"form-check-input showPointer","","checkbox");
     if(task.status) inputCheck.checked = true;
     const div2 = createElement("div",div1,"card-body text-center");
     
@@ -102,7 +120,11 @@ const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
         if(task.status) unCompleteTheTask(i,pageTasks,allTasks);
         else completeTheTask(i,pageTasks,allTasks);
     });
-    btnDelete.addEventListener("click",()=>deleteTask(i,pageTasks,allTasks))
+    btnDelete.addEventListener("click",()=>deleteTask(i,pageTasks,allTasks));
+    star.addEventListener("click",()=>{
+        if(task.favourite) unfavouriteTheTask(i,pageTasks,allTasks);
+        else favouriteTheTask(i,pageTasks,allTasks);
+    });
 }
 
 const drawTasks = (pageTasks,allTasks,currentDate = "")=>{
@@ -111,7 +133,8 @@ const drawTasks = (pageTasks,allTasks,currentDate = "")=>{
     });
 }
 
-const showTasks = (pageTasks,allTasks,currentDate = "")=>{
+const showTasks = (pageTasks,allTasks)=>{
+    const currentDate = new Date();
     const noTasksDiv = document.querySelector("#noTasksDiv");
 
     if(pageTasks.length <= 0) {
@@ -126,13 +149,11 @@ const showTasks = (pageTasks,allTasks,currentDate = "")=>{
 }
 
 if(notCompletedTasksSec){
-    const currentDate = new Date();
-
     const allTasks = readFromLocalStorage();
     const notCompletedTasks=allTasks.filter((task)=>{
         return task.status == false ;
     });
-    showTasks(notCompletedTasks,allTasks,currentDate);
+    showTasks(notCompletedTasks,allTasks);
 }
 
 //add task functions
@@ -176,17 +197,20 @@ if(addTaskForm){
     addTaskForm.addEventListener("submit", (e)=>validateInputs(e,allTasks));
 }
 
-////////////////////////////////////////////////////////////////////////////
-
 ///////////////// CompletedTasks Functions ////////////////////////////////
 const completedTasksSec = document.querySelector("#completedTasksSec");
 
 if(completedTasksSec){
-    const currentDate = new Date();
-
     const allTasks = readFromLocalStorage();
-    const completedTasks=allTasks.filter((task)=>{
-        return task.status == true ;
-    });
-    showTasks(completedTasks,allTasks,currentDate);
+    const completedTasks = allTasks.filter((task)=>task.status == true);
+    showTasks(completedTasks,allTasks);
+}
+
+///////////////// favouriteTasks Functions //////////////////////////////
+const favouriteTasksSec = document.querySelector("#favouriteTasksSec");
+
+if(favouriteTasksSec){
+    const allTasks = readFromLocalStorage();
+    const favouriteTasks = allTasks.filter((task)=>task.favourite == true);
+    showTasks(favouriteTasks,allTasks);
 }
