@@ -14,10 +14,11 @@ const taskObj = [
 const notCompletedTasksSec = document.querySelector("#notCompletedTasksSec");
 const tasksDiv = document.querySelector("#tasksDiv");
 
-const readFromLocalStorage = ()=>{
+const readFromLocalStorage = (key = "tasks")=>{
     let data;
     try{
-        data = JSON.parse(localStorage.getItem("tasks")) || [];
+        if(key == "taskIndex") return JSON.parse(localStorage.getItem(key));
+        data = JSON.parse(localStorage.getItem(key)) || [];
         if(!Array.isArray(data)) throw new Error('invalid data');
     }catch(e){
         console.log(e);
@@ -96,6 +97,12 @@ const favouriteTheTask = (i,pageTasks,allTasks)=>{
     showTasks(pageTasks,allTasks);
 }
 
+const viewTaskDetails = (i,pageTasks,allTasks)=>{
+    const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
+    writeToLocalStorage(taskIndex,"taskIndex");
+    window.location.href = "taskDetails.html";
+}
+
 const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
 
     const div1 = createElement("div",tasksDiv,"card w-25 mt-5 ms-2");
@@ -125,6 +132,7 @@ const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
         if(task.favourite) unfavouriteTheTask(i,pageTasks,allTasks);
         else favouriteTheTask(i,pageTasks,allTasks);
     });
+    btnViewDetails.addEventListener("click",()=>viewTaskDetails(i,pageTasks,allTasks));
 }
 
 const drawTasks = (pageTasks,allTasks,currentDate = "")=>{
@@ -213,4 +221,38 @@ if(favouriteTasksSec){
     const allTasks = readFromLocalStorage();
     const favouriteTasks = allTasks.filter((task)=>task.favourite == true);
     showTasks(favouriteTasks,allTasks);
+}
+
+///////////////// task Details Functions ///////////////////////////////
+const viewTaskDiv = document.querySelector("#viewTaskDiv");
+const viewEditForm = document.querySelector("#viewEditForm");
+
+const editTask = (taskIndex,allTasks)=>{
+    taskObj.forEach((head)=>{
+        if(head.value === null)  allTasks[taskIndex][head.key] = viewEditForm.elements[head.key].value;
+    });
+
+    writeToLocalStorage(allTasks);
+    const alertDiv = createElement("div",viewEditForm,"alert alert-success mt-3","Changes are Saved Successfully");
+    setTimeout(()=>alertDiv.remove(),2500);
+    
+}
+
+const validateEditInputs = (e,taskIndex,allTasks)=>{
+    e.preventDefault();
+
+    if(viewEditForm.elements["name"].value==""){
+        const alertDiv = createElement("div",viewEditForm,"alert alert-danger mt-3","You Should Enter Task Name");
+        setTimeout(()=>alertDiv.remove(),2000);
+    }
+    else { editTask(taskIndex,allTasks); }
+}
+
+if(viewTaskDiv){
+    const allTasks = readFromLocalStorage();
+    const taskIndex = readFromLocalStorage("taskIndex");
+    taskObj.forEach((head)=>{
+        if(head.value === null) viewEditForm.elements[head.key].value = allTasks[taskIndex][head.key];
+    });
+    viewEditForm.addEventListener("submit",(e)=>validateEditInputs(e,taskIndex,allTasks));
 }
