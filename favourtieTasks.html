@@ -10,30 +10,29 @@
     <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
+  <header>
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="index.html">To Do List</a>
+          <a class="navbar-brand" href="index.html">All</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav col-lg-9 col-12">
+            <ul class="navbar-nav col-lg-8 col-12">
+              <li class="nav-item">
+                <a class="nav-link" href="notCompletedTasks.html">Not Completed</a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="completedTasks.html">Completed</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="favourtieTasks.html">Favourites</a>
+                <a class="nav-link" href="favourtieTasks.html">Favourites</a>
               </li>
-            </ul>
-            <div class="col-lg-3 col-12">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>          
+            </ul>        
           </div>
         </div>
     </nav>
+  </header>
 
     <section id="favouriteTasksSec" class="position-relative">
       <div id="noTasksDiv" class="text-center position-relative hide">

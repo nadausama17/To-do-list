@@ -11,7 +11,7 @@ const taskObj = [
 ];
 
 ////////////// index functions //////////////////////////////////
-const notCompletedTasksSec = document.querySelector("#notCompletedTasksSec");
+const allTasksSec = document.querySelector("#allTasksSec");
 const tasksDiv = document.querySelector("#tasksDiv");
 
 const readFromLocalStorage = (key = "tasks")=>{
@@ -52,6 +52,34 @@ const showWarningMessage = (task,currentDate)=>{
                  (currentDate.getHours() == Number(timeArr[0]) &&
                  currentDate.getMinutes() > Number(timeArr[1]))){
                     return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+const showOverDueMessage = (task,currentDate)=>{
+    const dateArr = task["deadlineDate"].split("-");
+    const timeArr = task["deadlineTime"].split(":");
+
+    if(dateArr.length > 1 && timeArr.length > 1){
+        if(currentDate.getFullYear() > Number(dateArr[0])){
+            return true;
+        }else if(currentDate.getFullYear() == Number(dateArr[0])){
+            if(currentDate.getMonth()+1 > Number(dateArr[1])){
+                return true;
+            }else if(currentDate.getMonth()+1 == Number(dateArr[1])){
+                if(currentDate.getDate() > Number(dateArr[2])){
+                    return true;
+                }else if(currentDate.getDate() == Number(dateArr[2])){
+                    if(currentDate.getHours() > Number(timeArr[0])){
+                        return true;
+                    }else if(currentDate.getHours() == Number(timeArr[0])){
+                        if(currentDate.getMinutes() > Number(timeArr[1])){
+                            return true;
+                        }
+                    }
                 }
             }
         }
@@ -116,11 +144,21 @@ const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
     if(task.status) inputCheck.checked = true;
     const div2 = createElement("div",div1,"card-body text-center");
     
-    if(showWarningMessage(task,currentDate)){
-        const warningP = createElement("p",div2,"","Less than 2 Days left!!!")
-    };
+    if(showOverDueMessage(task,currentDate)){
+        if(!task.status){
+            createElement("p",div2,"","OverDue!!!")
+        }
+    }else{
+        if(showWarningMessage(task,currentDate)){
+            const warningP = createElement("p",div2,"","Less than 2 Days left!!!")
+        }
+    }
 
-    const p = createElement("p",div2,"card-text","Deadline: "+task["deadlineDate"]+" "+task["deadlineTime"]);
+    if(task["deadlineDate"] && task["deadlineTime"]){
+        const p = createElement("p",div2,"card-text","Deadline: "+task["deadlineDate"]+" "+task["deadlineTime"]);
+    }else{
+        const p = createElement("p",div2,"card-text","No Deadline");
+    }
     const btnViewDetails = createElement("button",div2,"btn btn-primary me-3","View Details");
     const btnDelete = createElement("button",div2,"btn btn-primary","Delete");
     inputCheck.addEventListener("click",()=>{
@@ -156,12 +194,10 @@ const showTasks = (pageTasks,allTasks)=>{
     }
 }
 
-if(notCompletedTasksSec){
+if(allTasksSec){
     const allTasks = readFromLocalStorage();
-    const notCompletedTasks=allTasks.filter((task)=>{
-        return task.status == false ;
-    });
-    showTasks(notCompletedTasks,allTasks);
+    const allTasksCopy = readFromLocalStorage();
+    showTasks(allTasksCopy,allTasks);
 }
 
 //add task functions
@@ -214,6 +250,14 @@ if(completedTasksSec){
     showTasks(completedTasks,allTasks);
 }
 
+/////////////// notCompletedTasks Functions ///////////////////////////
+const notCompletedTasksSec = document.querySelector("#notCompletedTasksSec");
+
+if(notCompletedTasksSec){
+    const allTasks = readFromLocalStorage();
+    const completedTasks = allTasks.filter((task)=>task.status == false);
+    showTasks(completedTasks,allTasks);
+}
 ///////////////// favouriteTasks Functions //////////////////////////////
 const favouriteTasksSec = document.querySelector("#favouriteTasksSec");
 
