@@ -90,7 +90,8 @@ const showOverDueMessage = (task,currentDate)=>{
 const unCompleteTheTask = (i,pageTasks,allTasks)=>{
     const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
     allTasks[taskIndex].status = false;
-    pageTasks.splice(i,1);
+    pageTasks[i].status = false;
+    if(!allTasksSec) pageTasks.splice(i,1);
     writeToLocalStorage(allTasks);
     showTasks(pageTasks,allTasks);
 }
@@ -98,7 +99,8 @@ const unCompleteTheTask = (i,pageTasks,allTasks)=>{
 const completeTheTask = (i,pageTasks,allTasks)=>{
     const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
     allTasks[taskIndex].status = true;
-    pageTasks.splice(i,1);
+    pageTasks[i].status = true;
+    if(!allTasksSec) pageTasks.splice(i,1);
     writeToLocalStorage(allTasks);
     showTasks(pageTasks,allTasks);
 }
@@ -114,6 +116,7 @@ const deleteTask = (i,pageTasks,allTasks)=>{
 const unfavouriteTheTask = (i,pageTasks,allTasks)=>{
     const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
     allTasks[taskIndex].favourite = false;
+    pageTasks[i].favourite = false;
     writeToLocalStorage(allTasks);
     showTasks(pageTasks,allTasks);
 }
@@ -121,6 +124,7 @@ const unfavouriteTheTask = (i,pageTasks,allTasks)=>{
 const favouriteTheTask = (i,pageTasks,allTasks)=>{
     const taskIndex = allTasks.findIndex((element)=>element.id == pageTasks[i].id);
     allTasks[taskIndex].favourite = true;
+    pageTasks[i].favourite = true;
     writeToLocalStorage(allTasks);
     showTasks(pageTasks,allTasks);
 }
@@ -140,8 +144,10 @@ const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
     const label = createElement("label",h5Div2,"fs-6","Complete");
     const star = createElement("i",h5Div2,"ms-1 fa-solid fa-star showPointer");
     if(task.favourite) star.classList.add("yellowStar");
+    else star.classList.remove("yellowStar");
     const inputCheck = createElement("input",h5Div2,"form-check-input showPointer","","checkbox");
     if(task.status) inputCheck.checked = true;
+    else inputCheck.checked = false;
     const div2 = createElement("div",div1,"card-body text-center");
     
     if(showOverDueMessage(task,currentDate)){
