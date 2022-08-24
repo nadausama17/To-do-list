@@ -1,6 +1,7 @@
 /* general style */
 /* body{
     background-color: aqua;
+    color: white!important;
 } */
 .show{
     display: block;
@@ -23,9 +24,9 @@ p{
 .yellowStar{
     color: orange;
 }
-/* .navbar{
+.navbar{
     opacity: 0.7;
-} */
+}
 .notasksyet{
     left: 42%;
 }

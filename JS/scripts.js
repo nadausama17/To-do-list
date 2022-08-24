@@ -217,7 +217,8 @@ const openCloseAddTaskForm = (e=false)=> {
     addTaskDiv.classList.toggle("d-none");
 }
 
-const addTaskFun = (allTasks)=>{
+const addTaskFun = ()=>{
+    const allTasks = readFromLocalStorage();
     const data = {};
 
     taskObj.forEach((head)=>{
@@ -225,26 +226,34 @@ const addTaskFun = (allTasks)=>{
         else data[head.key] = head.value;
     });
 
+    console.log(data);
+    console.log(allTasks);
     allTasks.push(data);
     writeToLocalStorage(allTasks);
     window.location.href="index.html";
 }
 
-const validateInputs = (e,allTasks)=>{
+const validateInputs = (e)=>{
     e.preventDefault();
 
     if(addTaskForm.elements["name"].value==""){
         const alertDiv = createElement("div",addTaskForm,"alert alert-danger mt-3","You Should Enter Task Name");
         setTimeout(()=>alertDiv.remove(),2000);
+    } 
+    else if((addTaskForm.elements["deadlineDate"].value && 
+    !addTaskForm.elements["deadlineTime"].value) ||
+    (!addTaskForm.elements["deadlineDate"].value && 
+    addTaskForm.elements["deadlineTime"].value)){
+        const alertDiv = createElement("div",addTaskForm,"alert alert-danger mt-3","You Should Enter Both Time and Date");
+        setTimeout(()=>alertDiv.remove(),2000);
     }
-    else { addTaskFun(allTasks); }
+    else { addTaskFun(); }
 }
 
 if(addTaskForm){
-    const allTasks = readFromLocalStorage();
     addTaskBtn.addEventListener("click", openCloseAddTaskForm);
     closeBtn.addEventListener("click",openCloseAddTaskForm);
-    addTaskForm.addEventListener("submit", (e)=>validateInputs(e,allTasks));
+    addTaskForm.addEventListener("submit", (e)=>validateInputs(e));
 }
 
 ///////////////// CompletedTasks Functions ////////////////////////////////
