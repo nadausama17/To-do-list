@@ -31,12 +31,11 @@
                 </ul>
                 <div class="col-lg-3 col-12">
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <input class="form-control me-2" type="search" id="inputSearch" placeholder="Search" aria-label="Search">
                     </form>
                 </div>
                 <div class="col-lg-1 col-12">
-                  <button class="btn" id="addTaskBtn">Add Task</button>
+                  <button class="btn border-dark p-1" id="addTaskBtn">Add Task</button>
                 </div>          
               </div>
             </div>
@@ -49,9 +48,11 @@
           <img src="images/notasks.jpg" class="w-25 mt-5" alt="no tasks">
         </div>
   
-        <div id="tasksDiv" class="mt-5 d-flex justify-content-evenly flex-wrap show">
+        <div class="container">
+          <div id="tasksDiv" class="row gx-3 mt-5 d-flex">
           
-        </div>
+          </div>
+        </div>  
         
         <div id="addTaskDiv" class="position-absolute top-0 end-0 bg-light d-none">
           <form id="addTaskForm" class="p-3">

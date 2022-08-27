@@ -13,6 +13,7 @@ const taskObj = [
 ////////////// index functions //////////////////////////////////
 const allTasksSec = document.querySelector("#allTasksSec");
 const tasksDiv = document.querySelector("#tasksDiv");
+const inputSearch = document.querySelector("#inputSearch");
 
 const readFromLocalStorage = (key = "tasks")=>{
     let data;
@@ -136,8 +137,8 @@ const viewTaskDetails = (i,pageTasks,allTasks)=>{
 }
 
 const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
-
-    const div1 = createElement("div",tasksDiv,"card w-25 mt-5 ms-2");
+    const div0 = createElement("div",tasksDiv,"col-lg-4 col-md-6 col-12 mt-3");
+    const div1 = createElement("div",div0,"card h-100");
     const h5 = createElement("h5",div1,"card-header d-flex justify-content-between");
     const h5Div1 = createElement("div",h5,"",task["name"]);
     const h5Div2 = createElement("div",h5,"form-check");
@@ -191,19 +192,28 @@ const showTasks = (pageTasks,allTasks)=>{
 
     if(pageTasks.length <= 0) {
         noTasksDiv.classList.replace("hide","show");
-        tasksDiv.classList.replace("show","hide");
+        tasksDiv.classList.replace("d-flex","hide");
     }else{
         tasksDiv.innerHTML="";
         noTasksDiv.classList.replace("show","hide");
-        tasksDiv.classList.replace("hide","show");
+        tasksDiv.classList.replace("hide","d-flex");
         drawTasks(pageTasks,allTasks,currentDate);
     }
+}
+
+const searchForTask = (val,allTasks)=>{
+    const searchTasks = allTasks.filter((task)=>{
+        let regex = new RegExp(val,"i");
+        return task.name.search(regex) != -1;
+    });
+    showTasks(searchTasks,allTasks);
 }
 
 if(allTasksSec){
     const allTasks = readFromLocalStorage();
     const allTasksCopy = readFromLocalStorage();
     showTasks(allTasksCopy,allTasks);
+    inputSearch.addEventListener("input",(e)=>searchForTask(e.target.value,allTasks))
 }
 
 //add task functions
