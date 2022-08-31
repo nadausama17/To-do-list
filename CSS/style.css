@@ -1,8 +1,35 @@
 /* general style */
-/* body{
-    background-color: aqua;
-    color: white!important;
-} */
+body{
+    background-color: #59C9A5;
+    color: #465775;
+}
+.generalColor{
+    background-color: #59C9A5!important;
+    border-color: #59C9A5!important;
+}
+.addTaskDivBorder{
+    border-color: #465775!important;
+}
+.form-check-input:checked{
+    background-color: rgb(70, 87, 117,1);
+    border-color: rgb(70, 87, 117,1);
+}
+.fontColor{
+    color: rgb(70, 87, 117,1)!important;
+    font-weight: bold;
+}
+.navbar{
+    opacity: 0.7;
+}
+.navbar,.navbar-brand,.navbar a, .navbar button{
+    color: #465775!important;
+}
+.navbar a, .navbar button{
+    opacity: 0.7!important;
+}
+.navbar a:hover, .navbar button:hover{
+    opacity: 1!important;
+}
 .show{
     display: block;
 }
@@ -18,14 +45,15 @@ p{
     color: black;
     text-shadow: 0px 5px 10px #ffffff;
 }
+.tasksShadow{
+    text-shadow: 0px 5px 10px #465775;
+    box-shadow: 0px 5px 10px #465775;
+}
 .showPointer{
     cursor: pointer;
 }
 .yellowStar{
     color: orange;
-}
-.navbar{
-    opacity: 0.7;
 }
 .notasksyet{
     left: 42%;

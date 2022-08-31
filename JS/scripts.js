@@ -138,7 +138,7 @@ const viewTaskDetails = (i,pageTasks,allTasks)=>{
 
 const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
     const div0 = createElement("div",tasksDiv,"col-lg-4 col-md-6 col-12 mt-3");
-    const div1 = createElement("div",div0,"card h-100");
+    const div1 = createElement("div",div0,"card h-100 fontColor tasksShadow");
     const h5 = createElement("h5",div1,"card-header d-flex justify-content-between");
     const h5Div1 = createElement("div",h5,"",task["name"]);
     const h5Div2 = createElement("div",h5,"form-check");
@@ -153,21 +153,21 @@ const drawSingleTask = (task,i,pageTasks,allTasks,currentDate = "")=>{
     
     if(showOverDueMessage(task,currentDate)){
         if(!task.status){
-            createElement("p",div2,"","OverDue!!!")
+            createElement("p",div2,"fontColor","OverDue!!!")
         }
     }else{
         if(showWarningMessage(task,currentDate)){
-            const warningP = createElement("p",div2,"","Less than 2 Days left!!!")
+            const warningP = createElement("p",div2,"fontColor","Less than 2 Days left!!!")
         }
     }
 
     if(task["deadlineDate"] && task["deadlineTime"]){
-        const p = createElement("p",div2,"card-text","Deadline: "+task["deadlineDate"]+" "+task["deadlineTime"]);
+        const p = createElement("p",div2,"card-text fontColor","Deadline: "+task["deadlineDate"]+" "+task["deadlineTime"]);
     }else{
-        const p = createElement("p",div2,"card-text","No Deadline");
+        const p = createElement("p",div2,"card-text fontColor","No Deadline");
     }
-    const btnViewDetails = createElement("button",div2,"btn btn-primary me-3","View Details");
-    const btnDelete = createElement("button",div2,"btn btn-primary","Delete");
+    const btnViewDetails = createElement("button",div2,"btn btn-primary me-3 generalColor","View Details");
+    const btnDelete = createElement("button",div2,"btn btn-primary generalColor","Delete");
     inputCheck.addEventListener("click",()=>{
         if(task.status) unCompleteTheTask(i,pageTasks,allTasks);
         else completeTheTask(i,pageTasks,allTasks);
